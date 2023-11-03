@@ -1,5 +1,6 @@
 package com.example.bai7_roomdatabase
 
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,9 +11,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.rounded.QrCode2
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
@@ -34,11 +37,11 @@ import androidx.navigation.NavHostController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContactListScreen(navController: NavHostController){
-    var viewModel: ContactListViewModel = viewModel(
-        modelClass = ContactListViewModel::class.java
+fun ContactSearchScreen(navController: NavHostController){
+    var viewModel = viewModel(
+        modelClass = ContactSearchViewModel::class.java
     )
-    var contactListState = viewModel.state
+    var state = viewModel.state
     Scaffold (
         topBar = {
             TopAppBar(
@@ -47,33 +50,16 @@ fun ContactListScreen(navController: NavHostController){
                 ),
                 title = {
                     TextField(
-                        value = "", onValueChange ={},
+                        value = state.txtSearch, onValueChange ={viewModel.onChangeText(it)
+                        },
                         modifier = Modifier.fillMaxWidth(),
                         placeholder = {
                             Text(text = "Search")
                         },
                         leadingIcon = {
-                            IconButton(onClick = {
-                                navController.navigate(NavRoute.SEARCH_SCREEN.route)
-                            }) {
-                                Icon(imageVector = Icons.Rounded.Search,
-                                    contentDescription = "" )
-                            }
-                        },
-                        trailingIcon = {
-                            Row {
-                                IconButton(onClick = { /*TODO*/ }) {
-                                    Icon(
-                                        Icons.Rounded.QrCode2,
-                                        contentDescription = null
-                                    )
-                                }
-                                IconButton(onClick = { /*TODO*/ }) {
-                                    Icon(
-                                        Icons.Rounded.Settings,
-                                        contentDescription = null
-                                    )
-                                }
+                            IconButton(onClick = { navController.popBackStack()}) {
+                                Icon(imageVector = Icons.Filled.ArrowBack,
+                                    contentDescription = null )
                             }
                         },
                         colors = TextFieldDefaults.textFieldColors(
@@ -82,13 +68,13 @@ fun ContactListScreen(navController: NavHostController){
                             containerColor = Color.LightGray
                         ),
 
-                    )
+                        )
                 }
             )
         },
         floatingActionButton = {
             IconButton(onClick = {
-                 navController.navigate(NavRoute.DETAIL_SCREEN.route)
+                navController.navigate(NavRoute.DETAIL_SCREEN.route)
             },
                 colors = IconButtonDefaults.iconButtonColors(
                     containerColor = Color.LightGray
@@ -100,27 +86,26 @@ fun ContactListScreen(navController: NavHostController){
             }
         },
         floatingActionButtonPosition = FabPosition.Center
-        ){
+    ){
         LazyColumn(contentPadding = it,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)){
-            items(contactListState.contacts){
-                con -> con
+            items(state.contacts){
+                    con -> con
                 CardInfo(name = con.FullName, phone =con.Phone,
                     onClickCard = {
                         navController.navigate(
                             NavRoute.DETAIL_SCREEN.route+
-                            "?id=${con.Id}"
+                                    "?id=${con.Id}"
                         )
-
                     },
                     onDeleteCard = {
                         viewModel.deleteContact(con)
                     }
-                    )
-            }
+                )
             }
         }
     }
+}

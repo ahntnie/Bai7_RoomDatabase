@@ -4,6 +4,7 @@ class ContactRepository(private val contactDao: ContactDao)
 {
     val contacts = contactDao.getAllContacts()
     fun getContactByID(id: Int) = contactDao.getContactById(id)
+    fun searchContact(txtSearch:String)=contactDao.searchContact(txtSearch)
     suspend fun deleteContact(contact: Contact){
         contactDao.deleteContact(contact)
     }

@@ -6,10 +6,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.bai7_roomdatabase.ContactDetailScreen
 import com.example.bai7_roomdatabase.ContactListScreen
+import com.example.bai7_roomdatabase.ContactSearchScreen
 
 sealed class NavRoute(val route: String){
     object LIST_SCREEN : NavRoute("contactlist")
     object DETAIL_SCREEN : NavRoute("contactdetail")
+
+    object SEARCH_SCREEN : NavRoute("contactsearch")
 }
 @Composable
 fun NavigationGraph(navController : NavHostController){
@@ -17,6 +20,9 @@ fun NavigationGraph(navController : NavHostController){
         startDestination = NavRoute.LIST_SCREEN.route){
         composable(NavRoute.LIST_SCREEN.route){
             ContactListScreen(navController)
+        }
+        composable(NavRoute.SEARCH_SCREEN.route){
+            ContactSearchScreen(navController)
         }
         composable(NavRoute.DETAIL_SCREEN.route+"?id={id}",
             arguments = listOf(navArgument("id"){

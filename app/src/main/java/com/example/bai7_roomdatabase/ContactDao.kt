@@ -15,6 +15,9 @@ interface ContactDao {
     @Query("Select * From Contact Where Id= :contactID")
     fun getContactById(contactID: Int): Flow<Contact>
 
+    @Query("Select * From Contact Where FullName like '%' ||:txtSearch||'%' OR Phone like '%'||:txtSearch||'%'")
+    fun searchContact(txtSearch: String): Flow<List<Contact>>
+
     @Insert
     suspend fun insertContact(contact: Contact)
 

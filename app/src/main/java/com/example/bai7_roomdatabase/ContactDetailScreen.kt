@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -21,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
@@ -61,12 +63,15 @@ fun ContactDetailScreen(navController: NavController, id: Int = -1){
         {
             OutlinedTextField(value = contactState.fullname,
                 onValueChange = viewModel::onChangeFullName,
-                label = {Text(text = "Email")
+                label = {Text(text = "Full name")
                 })
             OutlinedTextField(value = contactState.phone,
                 onValueChange =viewModel::onChangePhone,
-                label = {Text(text = "Email")
-                })
+                label = {Text(text = "Phone",
+                    )
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
             OutlinedTextField(value = contactState.email,
                 onValueChange =viewModel::onChangeEmail,
                 label = {Text(text = "Email")
